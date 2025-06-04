@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('price', 8, 2);
+            $table->integer('price');
             $table->boolean('is_available')->default(true);
             $table->string('image_url')->nullable();
             $table->json('dietary_info')->nullable();
