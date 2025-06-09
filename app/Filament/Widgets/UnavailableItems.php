@@ -16,6 +16,8 @@ class UnavailableItems extends BaseWidget
 
     protected int $queryCount;
 
+    protected int $perPage = 5;
+
     public function boot()
     {
         $this->queryCount = $this->getBaseQuery()->count();
@@ -36,8 +38,8 @@ class UnavailableItems extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->defaultPaginationPageOption(5)
-            ->paginated(fn() => $this->queryCount > 5)
+            ->defaultPaginationPageOption($this->perPage)
+            ->paginated(fn() => $this->queryCount > $this->perPage)
             ->query($this->getBaseQuery())
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
