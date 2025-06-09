@@ -1,9 +1,14 @@
 <x-filament-widgets::widget class="fi-wi-table">
-    <x-filament::section
-        :heading="$heading"
-        :collapsible="true"
-        :collapsed="$queryCount === 0"
-    >
-        {{ $table }}
-    </x-filament::section>
+    @if($queryCount > 0)
+        <x-filament::section
+            :heading="$message"
+            :collapsible="true"
+        >
+            {{ $table }}
+        </x-filament::section>
+    @else
+        <x-filament::section>
+            {{ $message }}
+        </x-filament::section>
+    @endif
 </x-filament-widgets::widget>

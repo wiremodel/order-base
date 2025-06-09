@@ -50,11 +50,11 @@ class UnavailableItems extends BaseWidget
 
     protected function getViewData(): array
     {
-        return ray()->pass([
+        return [
             'queryCount' => $this->queryCount,
-            'heading' => $this->getCardHeading(),
+            'message' => $this->getMessage(),
             'table' => $this->getTable(),
-        ]);
+        ];
     }
 
     protected function getUrlHTMLFor(MenuItem $record): HtmlString
@@ -72,12 +72,14 @@ class UnavailableItems extends BaseWidget
         HTML);
     }
 
-    protected function getCardHeading(): string|HtmlString
+    protected function getMessage(): HtmlString
     {
         if ($this->queryCount === 0) {
-            return new HtmlString("<div class='!text-base !font-normal'>
+            return new HtmlString(<<<HTML
+            <div class="text-gray-500">
                 All menu items are available.
-            </div>");
+            </div>
+            HTML);
         }
 
         return new HtmlString("<div class='text-base tracking-[0.07rem] uppercase font-normal text-red-700 dark:text-red-400'>
