@@ -20,6 +20,24 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        $namesAndEmailsWithRole = [
+            ['name' => 'Welcoming Wendy', 'email' => 'host@example.com'],
+            ['name' => 'Espresso Eddie', 'email' => 'barista@example.com'],
+            ['name' => 'Cha-Ching Charlie', 'email' => 'cashier@example.com'],
+            ['name' => 'Gourmet Gary', 'email' => 'chef@example.com'],
+            ['name' => 'Prep-Master Pete', 'email' => 'cook@example.com'],
+            ['name' => 'Boss Betty', 'email' => 'manager@example.com'],
+        ];
+
+        collect($namesAndEmailsWithRole)->each(function ($nameAndEmail) {
+            ['name' => $name, 'email' => $email] = $nameAndEmail;
+
+            User::factory()->create([
+                'name' => $name,
+                'email' => $email,
+            ]);
+        });
+
         $this->call([
             MenuItemSeeder::class,
         ]);
