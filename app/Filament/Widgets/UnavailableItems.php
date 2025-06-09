@@ -84,7 +84,7 @@ class UnavailableItems extends BaseWidget
         }
 
         return new HtmlString(<<<HTML
-        <div class='text-base tracking-[0.07rem] uppercase font-normal text-red-700 dark:text-red-400'>
+        <div class="text-base tracking-[0.07rem] uppercase font-normal text-red-700 dark:text-red-400">
             Unavailable menu items
         </div>
         HTML);
