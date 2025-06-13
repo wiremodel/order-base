@@ -25,25 +25,71 @@ class SupplierResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('address')
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('contact_person')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('notes')
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_active')
-                    ->default(true),
+                Forms\Components\Section::make('Basic Information')
+                    ->description('Core supplier details and contact information')
+                    ->icon('heroicon-o-building-office')
+                    ->schema([
+                        Forms\Components\Grid::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Supplier Name')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->placeholder('Enter supplier company name')
+                                    ->prefixIcon('heroicon-o-building-office-2'),
+                                Forms\Components\Toggle::make('is_active')
+                                    ->label('Active Supplier')
+                                    ->default(true)
+                                    ->helperText('Inactive suppliers will not appear in selection lists'),
+                            ]),
+                    ]),
+
+                Forms\Components\Section::make('Contact Details')
+                    ->description('How to reach this supplier')
+                    ->icon('heroicon-o-phone')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('contact_person')
+                                    ->label('Primary Contact')
+                                    ->maxLength(255)
+                                    ->placeholder('Contact person name')
+                                    ->prefixIcon('heroicon-o-user'),
+                                Forms\Components\TextInput::make('email')
+                                    ->label('Email Address')
+                                    ->email()
+                                    ->maxLength(255)
+                                    ->placeholder('supplier@example.com')
+                                    ->prefixIcon('heroicon-o-envelope'),
+                            ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('phone')
+                                    ->label('Phone Number')
+                                    ->tel()
+                                    ->maxLength(255)
+                                    ->placeholder('(555) 123-4567')
+                                    ->prefixIcon('heroicon-o-phone'),
+                                Forms\Components\Textarea::make('address')
+                                    ->label('Business Address')
+                                    ->maxLength(65535)
+                                    ->placeholder('Full business address including city, state, and postal code')
+                                    ->rows(3),
+                            ]),
+                    ]),
+
+                Forms\Components\Section::make('Additional Information')
+                    ->description('Notes and other relevant details')
+                    ->icon('heroicon-o-document-text')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Textarea::make('notes')
+                            ->label('Internal Notes')
+                            ->maxLength(65535)
+                            ->placeholder('Payment terms, delivery preferences, special instructions, etc.')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 
@@ -85,7 +131,7 @@ class SupplierResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PurchaseOrdersRelationManager::class,
         ];
     }
 

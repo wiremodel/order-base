@@ -83,7 +83,6 @@ class PurchaseOrderResource extends Resource
                                     ->numeric()
                                     ->required()
                                     ->prefix('$')
-                                    ->step(0.01)
                                     ->live()
                                     ->afterStateUpdated(function ($state, $set, $get) {
                                         $quantity = $get('quantity') ?? 0;
@@ -92,10 +91,8 @@ class PurchaseOrderResource extends Resource
                                 Forms\Components\TextInput::make('total_cost')
                                     ->numeric()
                                     ->disabled()
-                                    ->prefix('$')
-                                    ->step(0.01),
+                                    ->prefix('$'),
                                 Forms\Components\Textarea::make('notes')
-                                    ->maxLength(65535)
                                     ->columnSpanFull(),
                             ])
                             ->columns(4)
