@@ -43,11 +43,22 @@ class UnavailableItems extends BaseWidget
             ->query($this->getBaseQuery())
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('visit')
-                    ->alignEnd()
-                    ->state($this->getUrlHTMLFor(...))
-                    ->label(''),
+            ])
+            ->recordUrl($this->getRecordUrl(...))
+            ->actions([
+                Tables\Actions\Action::make('view')
+                    ->url($this->getRecordUrl(...))
+                    ->color('gray')
+                    ->icon('heroicon-m-eye')
+                    ->label('View'),
             ]);
+    }
+
+    private function getRecordUrl(MenuItem $record)
+    {
+        return MenuItemResource::getUrl('edit', [
+            'record' => $record,
+        ]);
     }
 
     protected function getViewData(): array
@@ -57,21 +68,6 @@ class UnavailableItems extends BaseWidget
             'message' => $this->getMessage(),
             'table' => $this->getTable(),
         ];
-    }
-
-    protected function getUrlHTMLFor(MenuItem $record): HtmlString
-    {
-        $url = MenuItemResource::getUrl('edit', [
-            'record' => $record,
-        ]);
-
-        $label = 'Edit';
-
-        return new HtmlString(<<<HTML
-            <a href="{$url}" class="text-blue-600 underline">
-                {$label}
-            </a>
-        HTML);
     }
 
     protected function getMessage(): HtmlString
@@ -89,6 +85,7 @@ class UnavailableItems extends BaseWidget
         <div class="text-base tracking-[0.07rem] uppercase font-normal text-red-700 dark:text-red-400">
             Unavailable menu items
         </div>
-        HTML);
+        HTML
+        );
     }
 }
