@@ -8,7 +8,10 @@ use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use App\Models\MenuItem;
 use Filament\Forms;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -35,7 +38,7 @@ class PurchaseOrderResource extends Resource
                             ->schema([
                                 Forms\Components\Grid::make(2)
                                     ->schema([
-                                        Forms\Components\TextInput::make('order_number')
+                                        TextInput::make('order_number')
                                             ->disabled()
                                             ->dehydrated(false)
                                             ->placeholder('Auto-generated')
@@ -49,13 +52,13 @@ class PurchaseOrderResource extends Resource
                                             ->prefixIcon('heroicon-m-building-storefront')
                                             ->label('Supplier')
                                             ->createOptionForm([
-                                                Forms\Components\TextInput::make('name')
+                                                TextInput::make('name')
                                                     ->required()
                                                     ->maxLength(255),
-                                                Forms\Components\TextInput::make('email')
+                                                TextInput::make('email')
                                                     ->email()
                                                     ->maxLength(255),
-                                                Forms\Components\TextInput::make('phone')
+                                                TextInput::make('phone')
                                                     ->tel()
                                                     ->maxLength(255),
                                             ]),
@@ -111,7 +114,7 @@ class PurchaseOrderResource extends Resource
                                     ->schema([
                                         Forms\Components\Grid::make(12)
                                             ->schema([
-                                                Forms\Components\TextInput::make('quantity')
+                                                TextInput::make('quantity')
                                                     ->numeric()
                                                     ->required()
                                                     ->minValue(1)
@@ -137,7 +140,7 @@ class PurchaseOrderResource extends Resource
                                                     ->columnSpan(9)
                                                     ->label('Item'),
 
-                                                Forms\Components\TextInput::make('unit_cost')
+                                                TextInput::make('unit_cost')
                                                     ->numeric()
                                                     ->required()
                                                     ->prefix('$')
@@ -152,7 +155,7 @@ class PurchaseOrderResource extends Resource
                                                         $unitCost = floatval($state ?? 0);
                                                         $set('total_cost', number_format($quantity * $unitCost, 2, '.', ''));
                                                     }),
-                                                Forms\Components\TextInput::make('total_cost')
+                                                TextInput::make('total_cost')
                                                     ->numeric()
                                                     ->disabled()
                                                     ->prefix('$')
@@ -216,12 +219,20 @@ class PurchaseOrderResource extends Resource
                                         ->icon('heroicon-m-document-duplicate')
                                         ->color('gray')
                                         ->outlined()
-                                        ->label('Duplicate Order'),
+                                        ->label('Duplicate Order')
+                                        ->action(fn() => Notification::make()
+                                            ->color('warning')
+                                            ->body('To be implemented')->send()
+                                        ),
                                     Forms\Components\Actions\Action::make('export')
                                         ->icon('heroicon-m-arrow-down-tray')
                                         ->color('gray')
                                         ->outlined()
-                                        ->label('Export PDF'),
+                                        ->label('Export PDF')
+                                        ->action(fn() => Notification::make()
+                                            ->color('warning')
+                                            ->body('To be implemented')->send()
+                                        ),
                                 ])
                                 ->fullWidth(),
                             ]),
@@ -234,9 +245,9 @@ class PurchaseOrderResource extends Resource
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Last Updated')
                                     ->content(fn ($record) => $record?->updated_at?->format('M j, Y g:i A') ?? 'Not saved yet'),
-                            ])
-                            ->hidden(fn ($record) => !$record),
+                            ]),
                     ])
+                    ->hidden(fn ($record) => !$record)
                     ->columnSpan(['lg' => 1]),
             ])
             ->columns(['lg' => 3]);
