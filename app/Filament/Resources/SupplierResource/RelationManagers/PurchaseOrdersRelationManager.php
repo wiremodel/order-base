@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SupplierResource\RelationManagers;
 
+use App\Enums\PurchaseOrderStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -98,13 +99,7 @@ class PurchaseOrdersRelationManager extends RelationManager
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'draft' => 'Draft',
-                        'pending' => 'Pending',
-                        'ordered' => 'Ordered',
-                        'received' => 'Received',
-                        'cancelled' => 'Cancelled',
-                    ])
+                    ->options(PurchaseOrderStatus::class)
                     ->multiple(),
                 Tables\Filters\Filter::make('delivery_overdue')
                     ->label('Overdue Deliveries')
