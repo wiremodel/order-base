@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SupplierResource extends Resource
 {
@@ -34,11 +32,13 @@ class SupplierResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->label('Supplier Name')
                                     ->required()
+                                    ->autofocus()
                                     ->maxLength(255)
                                     ->placeholder('Enter supplier company name')
                                     ->prefixIcon('heroicon-o-building-office-2'),
                                 Forms\Components\Toggle::make('is_active')
                                     ->label('Active Supplier')
+                                    ->columnStart(1)
                                     ->default(true)
                                     ->helperText('Inactive suppliers will not appear in selection lists'),
                             ]),
