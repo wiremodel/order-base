@@ -279,7 +279,7 @@ class PurchaseOrderResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_amount')
-//                    ->money('USD')
+                    ->money('USD', 100)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
