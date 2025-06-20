@@ -50,14 +50,6 @@ class PurchaseOrder extends Model
         return $this->hasMany(PurchaseOrderItem::class);
     }
 
-    protected function totalAmount(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value / 100,
-            set: fn ($value) => $value * 100,
-        );
-    }
-
     public function calculateTotal(): void
     {
         $this->total_amount = $this->items()->sum('total_cost');
