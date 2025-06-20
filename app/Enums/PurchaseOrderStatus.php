@@ -34,11 +34,4 @@ enum PurchaseOrderStatus: string implements HasLabel, HasColor
             self::Cancelled => 'Cancelled',
         };
     }
-
-    public static function getColorsAsKeys(): array
-    {
-        return collect(self::cases())
-            ->mapWithKeys(fn(self $case) => [$case->getColor() => $case->value])
-            ->toArray();
-    }
 }

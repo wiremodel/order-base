@@ -260,7 +260,6 @@ class PurchaseOrderResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->colors(PurchaseOrderStatus::getColorsAsKeys())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order_date')
                     ->date()
