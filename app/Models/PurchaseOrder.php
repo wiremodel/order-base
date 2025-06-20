@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PurchaseOrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,6 +26,7 @@ class PurchaseOrder extends Model
         'expected_delivery_date' => 'date',
         'actual_delivery_date' => 'date',
         'total_amount' => 'integer',
+        'status' => PurchaseOrderStatus::class,
     ];
 
     protected static function boot()

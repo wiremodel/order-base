@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PurchaseOrderStatus;
 use App\Filament\Resources\PurchaseOrderResource\Pages;
 use App\Filament\Resources\PurchaseOrderResource\RelationManagers;
 use App\Models\PurchaseOrder;
@@ -63,13 +64,7 @@ class PurchaseOrderResource extends Resource
                                                     ->maxLength(255),
                                             ]),
                                         Forms\Components\Select::make('status')
-                                            ->options([
-                                                'draft' => 'Draft',
-                                                'pending' => 'Pending',
-                                                'ordered' => 'Ordered',
-                                                'received' => 'Received',
-                                                'cancelled' => 'Cancelled',
-                                            ])
+                                            ->options(PurchaseOrderStatus::class)
                                             ->default('draft')
                                             ->required()
                                             ->prefixIcon('heroicon-m-clipboard-document-list')
@@ -263,14 +258,9 @@ class PurchaseOrderResource extends Resource
                 Tables\Columns\TextColumn::make('supplier.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'gray' => 'draft',
-                        'warning' => 'pending',
-                        'primary' => 'ordered',
-                        'success' => 'received',
-                        'danger' => 'cancelled',
-                    ])
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->colors(PurchaseOrderStatus::getColorsAsKeys())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order_date')
                     ->date()
@@ -287,7 +277,9 @@ class PurchaseOrderResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(PurchaseOrderStatus::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
