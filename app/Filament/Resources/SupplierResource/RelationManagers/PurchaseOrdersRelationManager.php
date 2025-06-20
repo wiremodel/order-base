@@ -25,13 +25,7 @@ class PurchaseOrdersRelationManager extends RelationManager
                     ->disabled()
                     ->label('Order Number'),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'draft' => 'Draft',
-                        'pending' => 'Pending',
-                        'ordered' => 'Ordered',
-                        'received' => 'Received',
-                        'cancelled' => 'Cancelled',
-                    ])
+                    ->options(PurchaseOrderStatus::class)
                     ->required(),
                 Forms\Components\DatePicker::make('order_date')
                     ->required()
@@ -60,14 +54,9 @@ class PurchaseOrdersRelationManager extends RelationManager
                     ->sortable()
                     ->searchable()
                     ->copyable(),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'secondary' => 'draft',
-                        'warning' => 'pending',
-                        'primary' => 'ordered',
-                        'success' => 'received',
-                        'danger' => 'cancelled',
-                    ])
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->colors(PurchaseOrderStatus::getColorsAsKeys())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order_date')
                     ->date()
@@ -104,8 +93,8 @@ class PurchaseOrdersRelationManager extends RelationManager
                 Tables\Filters\Filter::make('delivery_overdue')
                     ->label('Overdue Deliveries')
                     ->query(fn (Builder $query): Builder => $query
-                        ->where('status', '!=', 'received')
-                        ->where('status', '!=', 'cancelled')
+                        ->where('status', '!=', PurchaseOrderStatus::Received)
+                        ->where('status', '!=', PurchaseOrderStatus::Cancelled)
                         ->where('expected_delivery_date', '<', now())
                     )
                     ->indicator('Overdue'),
