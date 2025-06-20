@@ -53,6 +53,14 @@ class PurchaseOrder extends Model
     public function calculateTotal(): void
     {
         $this->total_amount = $this->items()->sum('total_cost');
+
         $this->save();
+    }
+
+    public function presentTotal(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => number_format($this->total_amount / 100, 2),
+        );
     }
 }

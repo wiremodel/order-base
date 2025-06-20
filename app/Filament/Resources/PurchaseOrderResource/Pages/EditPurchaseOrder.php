@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PurchaseOrderResource\Pages;
 
 use App\Filament\Resources\PurchaseOrderResource;
+use App\Filament\Resources\PurchaseOrderResource\Widgets\HighValuePurchaseOrder;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,5 +16,19 @@ class EditPurchaseOrder extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            HighValuePurchaseOrder::class,
+        ];
+    }
+
+    protected function afterSave(): void
+    {
+        if (HighValuePurchaseOrder::isNeededToShow($this->record)) {
+            $this->dispatch('open-modal', id: HighValuePurchaseOrder::ID);
+        }
     }
 }

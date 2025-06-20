@@ -5,19 +5,16 @@ namespace App\Filament\Resources;
 use App\Enums\PurchaseOrderStatus;
 use App\Filament\Resources\PurchaseOrderResource\Pages;
 use App\Filament\Resources\PurchaseOrderResource\RelationManagers;
+use App\Filament\Resources\PurchaseOrderResource\Widgets\HighValuePurchaseOrder;
 use App\Models\PurchaseOrder;
-use App\Models\Supplier;
 use App\Models\MenuItem;
 use Filament\Forms;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PurchaseOrderResource extends Resource
 {
@@ -294,6 +291,13 @@ class PurchaseOrderResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            HighValuePurchaseOrder::class,
         ];
     }
 
