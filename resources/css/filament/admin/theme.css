@@ -1,8 +1,4 @@
-@import '../../../../vendor/filament/filament/resources/css/base.css';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@tailwind variants;
-
-@config './tailwind.config.js';
+@source '../../../../app/Filament';
+@source '../../../../resources/views/filament';

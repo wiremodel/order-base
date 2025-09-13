@@ -2,17 +2,19 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\Action;
 use Filament\Tables;
 use App\Models\MenuItem;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\MenuItemResource;
+use App\Filament\Resources\MenuItems\MenuItemResource;
 use Filament\Widgets\TableWidget as BaseWidget;
 
 class UnavailableItems extends BaseWidget
 {
-    protected static string $view = 'filament.widgets.unavailable-items';
+    protected string $view = 'filament.widgets.unavailable-items';
 
     protected int $queryCount;
 
@@ -42,11 +44,11 @@ class UnavailableItems extends BaseWidget
             ->paginated(fn() => $this->queryCount > $this->perPage)
             ->query($this->getBaseQuery())
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                TextColumn::make('name'),
             ])
             ->recordUrl($this->getRecordUrl(...))
-            ->actions([
-                Tables\Actions\Action::make('view')
+            ->recordActions([
+                Action::make('view')
                     ->url($this->getRecordUrl(...))
                     ->color('gray')
                     ->icon('heroicon-m-eye')

@@ -2,20 +2,19 @@
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Schemas\Schema;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use App\Models\User;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
-use Filament\Pages\Auth\Login as BasePage;
-use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 
-class Login extends BasePage
+class Login extends \Filament\Auth\Pages\Login
 {
     public function mount(): void
     {
         parent::mount();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         if (app()->environment('local')) {
 
@@ -27,17 +26,17 @@ class Login extends BasePage
                 ->whereLike('email', '%@example.com')
                 ->first()?->email;
 
-            $form->schema([
+            $schema->components([
                 Select::make('user')
                     ->required()
                     ->options($users)
                     ->default($defaultUserEmail),
             ]);
 
-            return $form;
+            return $schema;
         }
 
-        return parent::form($form);
+        return parent::form($schema);
     }
 
     public function authenticate(): ?LoginResponse
