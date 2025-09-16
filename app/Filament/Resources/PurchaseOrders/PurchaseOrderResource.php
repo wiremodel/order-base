@@ -2,7 +2,8 @@
 
 namespace App\Filament\Resources\PurchaseOrders;
 
-use App\Filament\Resources\PurchaseOrders\Schemas\PurchaseOrderForm;
+use App\Filament\Resources\PurchaseOrders\Pages\ViewPurchaseOrder;
+use App\Filament\Resources\PurchaseOrders\Schemas\PurchaseOrderSchema;
 use App\Filament\Resources\PurchaseOrders\Tables\PurchaseOrdersTable;
 use Filament\Schemas\Schema;
 use App\Filament\Resources\PurchaseOrders\Pages\ListPurchaseOrders;
@@ -23,12 +24,12 @@ class PurchaseOrderResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return PurchaseOrderForm::configure($schema);
+        return PurchaseOrderSchema::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        PurchaseOrdersTable::configure($table);
+        return PurchaseOrdersTable::configure($table);
     }
 
     public static function getRelations(): array

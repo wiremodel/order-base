@@ -18,7 +18,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
-class PurchaseOrderForm
+class PurchaseOrderSchema
 {
     public static function configure(Schema $schema): Schema
     {
@@ -90,79 +90,12 @@ class PurchaseOrderForm
                             ->description('Add items to this purchase order')
                             ->icon('heroicon-m-shopping-bag')
                             ->headerActions([
-//                                Action::make('addBulkItems')
-//                                    ->button()
-//                                    ->color('gray')
-//                                    ->icon('heroicon-m-plus-circle')
-//                                    ->label('Quick Add Items')
+                                //
                             ])
                             ->schema([
                                 Repeater::make('items')
                                     ->relationship()
-                                    ->schema([
-                                        Grid::make(12)
-                                            ->schema([
-                                                TextInput::make('quantity')
-                                                    ->numeric()
-                                                    ->required()
-                                                    ->minValue(1)
-                                                    ->default(1)
-                                                    ->step(1)
-                                                    ->prefixIcon('heroicon-m-calculator')
-                                                    ->columnSpan(3)
-                                                    ->label('Qty')
-                                                    ->live(debounce: 500)
-                                                    ->afterStateUpdated(function ($state, $set, $get) {
-                                                        $unitCost = floatval($get('unit_cost') ?? 0);
-                                                        $quantity = intval($state ?? 0);
-                                                        $set('total_cost', number_format($quantity * $unitCost, 2, '.', ''));
-                                                    }),
-
-                                                Select::make('menu_item_id')
-                                                    ->relationship('menuItem', 'name')
-                                                    ->searchable()
-                                                    ->preload()
-                                                    ->required()
-                                                    ->prefixIcon('heroicon-m-cube')
-                                                    ->placeholder('Select item...')
-                                                    ->columnSpan(9)
-                                                    ->label('Item'),
-
-                                                TextInput::make('unit_cost')
-                                                    ->numeric()
-                                                    ->required()
-                                                    ->prefix('$')
-                                                    ->step(0.01)
-                                                    ->minValue(0)
-                                                    ->prefixIcon('heroicon-m-currency-dollar')
-                                                    ->columnSpan(6)
-                                                    ->label('Unit Cost')
-                                                    ->live(debounce: 500)
-                                                    ->afterStateUpdated(function ($state, $set, $get) {
-                                                        $quantity = intval($get('quantity') ?? 0);
-                                                        $unitCost = floatval($state ?? 0);
-                                                        $set('total_cost', number_format($quantity * $unitCost, 2, '.', ''));
-                                                    }),
-                                                TextInput::make('total_cost')
-                                                    ->numeric()
-                                                    ->disabled()
-                                                    ->prefix('$')
-                                                    ->dehydrated()
-                                                    ->prefixIcon('heroicon-m-calculator')
-                                                    ->columnSpan(6)
-                                                    ->label('Total')
-                                                    ->extraAttributes(['class' => 'font-semibold']),
-                                                Actions::make([
-
-                                                ])
-                                                    ->columnSpan(2),
-                                            ]),
-                                        Textarea::make('notes')
-                                            ->placeholder('Item notes...')
-                                            ->rows(2)
-                                            ->columnSpanFull()
-                                            ->hiddenLabel(),
-                                    ])
+                                    ->schema(OrderItemSchema::get())
                                     ->itemLabel(fn (array $state): ?string =>
                                         MenuItem::find($state['menu_item_id'])?->name ?? 'New Item'
                                     )
