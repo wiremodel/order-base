@@ -20,9 +20,7 @@ use App\Filament\Resources\Suppliers\Pages\EditSupplier;
 use App\Filament\Resources\SupplierResource\Pages;
 use App\Filament\Resources\SupplierResource\RelationManagers;
 use App\Models\Supplier;
-use Filament\Forms;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
 
 class SupplierResource extends Resource
