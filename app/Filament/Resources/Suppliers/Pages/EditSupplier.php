@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Suppliers\Pages;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use App\Filament\Resources\Suppliers\SupplierResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Notifications\Notification;
 

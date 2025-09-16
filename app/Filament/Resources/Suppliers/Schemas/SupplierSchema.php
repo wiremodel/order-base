@@ -19,21 +19,18 @@ class SupplierSchema
                     ->description('Core supplier details and contact information')
                     ->icon('heroicon-o-building-office')
                     ->schema([
-                        Grid::make()
-                            ->schema([
-                                TextInput::make('name')
-                                    ->label('Supplier Name')
-                                    ->required()
-                                    ->autofocus()
-                                    ->maxLength(255)
-                                    ->placeholder('Enter supplier company name')
-                                    ->prefixIcon('heroicon-o-building-office-2'),
-                                Toggle::make('is_active')
-                                    ->label('Active Supplier')
-                                    ->columnStart(1)
-                                    ->default(true)
-                                    ->helperText('Inactive suppliers will not appear in selection lists'),
-                            ]),
+                        TextInput::make('name')
+                            ->label('Supplier Name')
+                            ->required()
+                            ->autofocus()
+                            ->maxLength(255)
+                            ->placeholder('Enter supplier company name')
+                            ->prefixIcon('heroicon-o-building-office-2'),
+                        Toggle::make('is_active')
+                            ->label('Active Supplier')
+                            ->columnStart(1)
+                            ->default(true)
+                            ->helperText('Inactive suppliers will not appear in selection lists'),
                     ]),
 
                 Section::make('Contact Details')
