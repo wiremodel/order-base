@@ -2,19 +2,40 @@
 
 namespace App\Filament\Resources\Suppliers\Schemas;
 
+use App\Enums\PurchaseOrderStatus;
+use App\Models\Supplier;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\HtmlString;
 
 class SupplierSchema
 {
     public static function configure(Schema $schema): Schema
     {
+        $pendingOrdersQuery = fn(Supplier $record) => $record
+            ->purchaseOrders()
+            ->where('status', PurchaseOrderStatus::Pending);
+
         return $schema
             ->components([
+                Section::make(new HtmlString('<span class="text-warning-500 dark:text-warning-400"> Pending Orders </span>'))
+                    ->iconColor('warning')
+                    ->columnSpanFull()
+                    ->icon(Heroicon::OutlinedExclamationTriangle)
+                    ->visible(fn(Supplier $record) => $pendingOrdersQuery($record)->exists())
+                    ->schema([
+                        Text::make(function (Supplier $record) use ($pendingOrdersQuery) {
+                                $count = $pendingOrdersQuery($record)->count();
+
+                                return 'There are ' . $count . ' pending order(s) from this supplier.';
+                            }),
+                    ]),
                 Section::make('Basic Information')
                     ->description('Core supplier details and contact information')
                     ->icon('heroicon-o-building-office')

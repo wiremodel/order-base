@@ -113,7 +113,10 @@ class PurchaseOrdersRelationManager extends RelationManager
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->after(function(PurchaseOrdersRelationManager $livewire) {
+                        $livewire->dispatch('refresh-page');
+                    }),
                 Action::make('view')
                     ->label('View Details')
                     ->icon('heroicon-o-eye')
