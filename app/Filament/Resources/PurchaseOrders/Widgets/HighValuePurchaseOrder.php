@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\PurchaseOrders\Widgets;
 
-use App\Filament\Resources\PurchaseOrders\Widgets\HighValuePurchaseOrder;
 use App\Models\PurchaseOrder;
 use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Model;
