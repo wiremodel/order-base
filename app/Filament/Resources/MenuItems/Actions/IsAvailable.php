@@ -16,6 +16,7 @@ class IsAvailable
         return Action::make(static::Action_ID)
             ->action(static::handleAction(...))
             ->requiresConfirmation()
+            ->modalHeading(fn($arguments) => 'Change Availability of: ' . data_get($arguments, 'record.name') . '?')
             ->extraAttributes(['class' => 'hidden']);
     }
 
