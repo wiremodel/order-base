@@ -2,58 +2,85 @@
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use App\Models\User;
-use Filament\Forms\Components\Select;
+use Illuminate\Validation\ValidationException;
+use SensitiveParameter;
 
 class Login extends \Filament\Auth\Pages\Login
 {
     public function mount(): void
     {
         parent::mount();
+
+        if (app()->environment('local')) {
+            $this->form->fill([
+                'credential' => 'test@example.com',
+//                'credential' => '123456789',
+//                'credential' => 'test-user',
+                'password' => 'password',
+                'remember' => true,
+            ]);
+        }
     }
 
     public function form(Schema $schema): Schema
     {
-        if (app()->environment('local')) {
-
-            $users = User::query()
-                ->whereLike('email', '%@example.com')
-                ->pluck('name', 'email');
-
-            $defaultUserEmail = User::query()
-                ->whereLike('email', '%@example.com')
-                ->first()?->email;
-
-            $schema->components([
-                Select::make('user')
+        return $schema
+            ->components([
+                TextInput::make('credential')
+                    ->label('Credential')
                     ->required()
-                    ->options($users)
-                    ->default($defaultUserEmail),
+                    ->autocomplete()
+                    ->autofocus()
+                    ->extraInputAttributes(['tabindex' => 1]),
+                $this->getPasswordFormComponent(),
+                $this->getRememberFormComponent(),
             ]);
+    }
 
-            return $schema;
+    protected function getCredentialsFromFormData(#[SensitiveParameter] array $data): array
+    {
+        $credential = $data['credential'];
+
+        // Try to find user by email, username, or ss_number
+        $user = User::where('email', $credential)
+            ->orWhere('username', $credential)
+            ->orWhere('ss_number', $credential)
+            ->first();
+
+        if (!$user) {
+            return [
+                'email' => $credential, // Fallback to email for validation error
+                'password' => $data['password'],
+            ];
         }
 
-        return parent::form($schema);
+        // Return the actual field that matched
+        $field = match(true) {
+            $user->email === $credential => 'email',
+            $user->username === $credential => 'username',
+            $user->ss_number === $credential => 'ss_number',
+            default => 'email',
+        };
+
+        return [
+            $field => $credential,
+            'password' => $data['password'],
+        ];
+    }
+
+    protected function throwFailureValidationException(): never
+    {
+        throw ValidationException::withMessages([
+            'data.credential' => __('filament-panels::auth/pages/login.messages.failed'),
+        ]);
     }
 
     public function authenticate(): ?LoginResponse
     {
-        if (app()->environment('local')) {
-
-            $authenticateAs = $this->form->getState()['user'] ?? null;
-
-            auth()->login(
-                User::query()
-                    ->whereLike('email', '%@example.com')
-                    ->where('email', $authenticateAs)->first()
-            );
-
-            return app(LoginResponse::class);
-        }
-
         return parent::authenticate();
     }
 
