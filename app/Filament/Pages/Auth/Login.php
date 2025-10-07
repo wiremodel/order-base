@@ -4,7 +4,6 @@ namespace App\Filament\Pages\Auth;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use SensitiveParameter;
@@ -78,10 +77,4 @@ class Login extends \Filament\Auth\Pages\Login
             'data.credential' => __('filament-panels::auth/pages/login.messages.failed'),
         ]);
     }
-
-    public function authenticate(): ?LoginResponse
-    {
-        return parent::authenticate();
-    }
-
 }
