@@ -15,6 +15,10 @@ class IsAvailable
     {
         return Action::make(static::Action_ID)
             ->action(static::handleAction(...))
+            // You may have a custom form schema if needed, and get that in the arguments' injection
+            // ->schema([
+            //     TextInput...
+            // ])
             ->requiresConfirmation()
             ->modalHeading(fn($arguments) => 'Change Availability of: ' . data_get($arguments, 'record.name') . '?')
             ->extraAttributes(['class' => 'hidden']);
