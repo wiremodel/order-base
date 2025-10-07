@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\MenuItems\Pages;
 
+use App\Filament\Resources\MenuItems\Actions\IsAvailable;
 use Filament\Actions\CreateAction;
 use App\Filament\Resources\MenuItems\MenuItemResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListMenuItems extends ListRecords
@@ -14,6 +14,7 @@ class ListMenuItems extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            IsAvailable::action(),
             CreateAction::make(),
         ];
     }

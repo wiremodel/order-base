@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\MenuItems\Tables;
 
+use App\Filament\Resources\MenuItems\Actions\IsAvailable;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class MenuItemTable
@@ -20,8 +21,9 @@ class MenuItemTable
                 TextColumn::make('price')
                     ->money('USD')
                     ->sortable(),
-                IconColumn::make('is_available')
-                    ->boolean(),
+                ToggleColumn::make('is_available')
+                    ->label('Is available?')
+                    ->updateStateUsing(IsAvailable::updateStateUsing(...)),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
