@@ -10,17 +10,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class PurchaseOrder extends Model
 {
-    protected $fillable = [
-        'order_number',
-        'supplier_id',
-        'status',
-        'order_date',
-        'expected_delivery_date',
-        'actual_delivery_date',
-        'total_amount',
-        'notes',
-    ];
-
     protected $casts = [
         'order_date' => 'date',
         'expected_delivery_date' => 'date',
