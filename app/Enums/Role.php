@@ -2,10 +2,11 @@
 
 namespace App\Enums;
 
+use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 
-enum Role: string implements HasLabel
+enum Role: string implements HasLabel, HasColor
 {
     case Admin = 'admin';
     case Office = 'office';
@@ -19,6 +20,16 @@ enum Role: string implements HasLabel
             self::Office => 'Office Area',
             self::Kitchen => 'Kitchen Area',
             self::DiningRoom => 'Dining Room Area',
+        };
+    }
+
+    public function getColor(): string|array|null
+    {
+        return match ($this) {
+            self::Admin => 'danger',
+            self::Office => 'info',
+            self::Kitchen => 'success',
+            self::DiningRoom => 'warning',
         };
     }
 }

@@ -24,6 +24,8 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('roles')
                     ->badge()
+                    // We have to calculate the color because this comes from a relationship, not an Enum cast
+                    ->color(fn ($state): string => Role::tryFrom($state->role)?->getColor())
                     ->formatStateUsing(fn ($state): string => Role::tryFrom($state->role)->getLabel()),
                 TextColumn::make('email_verified_at')
                     ->dateTime()
